@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "431139335301",
+    "firebase_url": "https://mydatabase-8a0b4.firebaseio.com",
+    "project_id": "mydatabase-8a0b4",
+    "storage_bucket": "mydatabase-8a0b4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:431139335301:android:332d570d698741a9",
+        "android_client_info": {
+          "package_name": "com.example.sjors.sjors_witteveen_pset6"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "431139335301-s9tg17df1jgt8p3m0fqn7hd03pko4uul.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPIk8OjpRU-Jk_3zdD9QiYzkmUIbqx1lM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
