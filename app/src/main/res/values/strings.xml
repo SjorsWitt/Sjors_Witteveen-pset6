@@ -1,4 +1,12 @@
 <resources>
-    <string name="app_name">Sjors_Witteveen-pset6</string>
+    <string name="app_name">Chuck Norris jokes</string>
     <string name="clientID">431139335301-s9tg17df1jgt8p3m0fqn7hd03pko4uul.apps.googleusercontent.com</string>
+    <string name="get_random_joke_text">Get random joke!</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="double_back_pressed">Click back again to sign out.</string>
+    <string name="initial_text">Hit the button to get a random joke! You can save jokes by hitting the save button. By filling in a first name and/or last name, you can replace Chuck Norris with whatever you want!</string>
+    <string name="loading">Loading random joke...</string>
+    <string name="save_button_desc">Save button</string>
+    <string name="saved_joke">Saved joke to your favorites list</string>
 </resources>
