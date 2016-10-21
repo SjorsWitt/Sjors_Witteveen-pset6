@@ -9,4 +9,5 @@
     <string name="loading">Loading random joke...</string>
     <string name="save_button_desc">Save button</string>
     <string name="saved_joke">Saved joke to your favorites list</string>
+    <string name="copied_to_clipboard">Copied to clipboard.</string>
 </resources>

@@ -1,5 +1,8 @@
 package com.example.sjors.sjors_witteveen_pset6;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -61,6 +65,18 @@ public class FavoriteJokesActivity extends AppCompatActivity {
                 Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
             }
         };
+
+        jokeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            // checks/unchecks ToDoItem that is clicked and notifies adapter
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Joke joke = (Joke) jokeList.getItemAtPosition(position);
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText(joke.getId(), joke.getJoke());
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(getApplicationContext(), R.string.copied_to_clipboard, Toast.LENGTH_SHORT).show();
+            }
+        });
 
         jokeList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             // removes ToDoItem from ToDoItems ArrayList and notifies adapter
