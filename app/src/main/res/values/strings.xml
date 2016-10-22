@@ -6,11 +6,15 @@
     <string name="last_name">Last name</string>
     <string name="double_back_pressed">Click back again to sign out.</string>
     <string name="initial_text">Hit the button to get a random joke! You can save jokes by hitting the save button. By filling in a first name and/or last name, you can replace Chuck Norris with whatever you want!</string>
-    <string name="loading">Loading random joke...</string>
+    <string name="loading">Loading random joke…</string>
     <string name="save_button_desc">Save button</string>
     <string name="saved_joke">Saved joke to your favorites list</string>
     <string name="copied_to_clipboard">Copied to clipboard.</string>
     <string name="save">SAVE</string>
     <string name="logged_in_as">You are signed in as:</string>
     <string name="log_out">Sign out</string>
+    <string name="favorites">Favorites</string>
+    <string name="more_info">More info</string>
+    <string name="info_toast">Tap a joke to copy it to your clipboard.\nHold a joke to remove it from this list.</string>
+    <string name="welcome_message">Sign in to continue.</string>
 </resources>

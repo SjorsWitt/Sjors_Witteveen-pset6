@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Button;
@@ -71,9 +73,8 @@ public class MainActivity extends AppCompatActivity {
             jokesReference = database.getReference("/users/" + user.getUid() + "/jokes/");
         }
 
-
         // AuthStateListener
-        // when user is logged out, finish MainActivity
+        // finish MainActivity when user is logged out
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -85,6 +86,25 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // add favorites button to action bar
+        getMenuInflater().inflate(R.menu.button_favorites, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent = new Intent(this, FavoriteJokesActivity.class);
+        startActivity(intent);
+
+        Toast.makeText(getApplicationContext(), "Opened your favorite jokes list!",
+                Toast.LENGTH_SHORT).show();
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -146,11 +166,6 @@ public class MainActivity extends AppCompatActivity {
         jokes.saveActiveJoke();
         jokesReference.child(jokes.getActiveJoke().getId())
                 .setValue(jokes.getActiveJoke().getJoke());
-    }
-
-    public void blabla(View view) {
-        Intent intent = new Intent(this, FavoriteJokesActivity.class);
-        startActivity(intent);
     }
 
     public void signOut(View view) {
