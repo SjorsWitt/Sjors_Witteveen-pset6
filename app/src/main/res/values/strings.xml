@@ -11,6 +11,6 @@
     <string name="saved_joke">Saved joke to your favorites list</string>
     <string name="copied_to_clipboard">Copied to clipboard.</string>
     <string name="save">SAVE</string>
-    <string name="logged_in_as">You are logged in as:</string>
-    <string name="log_out">Log out</string>
+    <string name="logged_in_as">You are signed in as:</string>
+    <string name="log_out">Sign out</string>
 </resources>
