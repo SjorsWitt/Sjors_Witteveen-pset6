@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -36,11 +37,18 @@ public class FavoriteJokesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite_jokes);
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         jokes = Jokes.getInstance();
         user = mAuth.getCurrentUser();
-        jokesReference = database.getReference("/users/" + user.getUid() + "/jokes/");
+
+        if (user != null) {
+            jokesReference = database.getReference("/users/" + user.getUid() + "/jokes/");
+        }
 
         final ListView jokeList = (ListView) findViewById(R.id.joke_list);
         final JokesAdapter adapter = new JokesAdapter(this, jokes.getJokes());
@@ -87,6 +95,12 @@ public class FavoriteJokesActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        finish();
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

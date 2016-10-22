@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,84 +8,117 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:gravity="center_horizontal"
     tools:context="com.example.sjors.sjors_witteveen_pset6.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:maxWidth="0dp"
-            android:layout_height="wrap_content"
-            android:lines="6"
-            android:textSize="16sp"
-            android:padding="12dp"/>
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/black">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
             <TextView
+                android:layout_width="wrap_content"
+                android:maxWidth="0dp"
+                android:layout_height="wrap_content"
+                android:lines="6"
+                android:textSize="16sp"
+                android:padding="12dp"/>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/initial_text"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:id="@+id/joke_text"
-                android:layout_margin="2dp"
-                android:padding="10dp"
-                android:background="@color/white"
-                android:textColor="@android:color/black"/>
+                android:background="@android:color/black">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/initial_text"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:id="@+id/joke_text"
+                    android:layout_margin="2dp"
+                    android:padding="10dp"
+                    android:background="@color/white"
+                    android:textColor="@android:color/black"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            style="?android:attr/buttonBarStyle">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/get_random_joke_text"
+                android:onClick="onRandomButtonClick"
+                style="?android:attr/buttonBarButtonStyle"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/save_button"
+                android:drawableLeft="@drawable/ic_save_joke"
+                android:drawableStart="@drawable/ic_save_joke"
+                android:drawablePadding="5dp"
+                android:onClick="onSave"
+                android:text="@string/save"
+                android:contentDescription="@string/save_button_desc"
+                style="?android:attr/buttonBarButtonStyle"/>
+
+        </LinearLayout>
+
+        <EditText
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/first_name"
+            android:inputType="textCapWords"
+            android:hint="@string/first_name" />
+
+        <EditText
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/last_name"
+            android:inputType="textCapWords"
+            android:hint="@string/last_name"/>
 
         <Button
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/get_random_joke_text"
-            android:onClick="onRandomButtonClick"/>
-
-        <ImageButton
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/save_button"
-            android:src="@drawable/ic_save_joke"
-            android:onClick="onSave"
-            android:contentDescription="@string/save_button_desc" />
+            android:onClick="blabla"/>
 
     </LinearLayout>
 
-    <EditText
-        android:layout_width="200dp"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/first_name"
-        android:inputType="textCapWords"
-        android:hint="@string/first_name"/>
-
-    <EditText
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/last_name"
-        android:inputType="textCapWords"
-        android:hint="@string/last_name"/>
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:text="@string/logged_in_as"
+        android:id="@+id/logged_in_as"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="blabla"/>
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:text="@string/log_out"
+        android:textSize="12sp"
+        android:onClick="signOut"/>
 
-</LinearLayout>
+</RelativeLayout>

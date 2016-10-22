@@ -1,6 +1,7 @@
 package com.example.sjors.sjors_witteveen_pset6;
 
 import android.os.AsyncTask;
+import android.widget.Button;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -16,10 +17,12 @@ public class ReadJokeFromJsonURL extends AsyncTask<Void, Void, Void> {
     private URL url;
     private JSONObject randomJoke;
     private TextView jokeText;
+    private Button saveButton;
 
-    public ReadJokeFromJsonURL(TextView jokeText, URL url) {
+    public ReadJokeFromJsonURL(TextView jokeText, Button saveButton, URL url) {
         this.url = url;
         this.jokeText = jokeText;
+        this.saveButton = saveButton;
         jokes = Jokes.getInstance();
     }
 
@@ -60,10 +63,14 @@ public class ReadJokeFromJsonURL extends AsyncTask<Void, Void, Void> {
             try {
                 if (randomJoke.getString("type").equals("success")) {
                     JSONObject value = randomJoke.getJSONObject("value");
-                    jokeText.setText(value.getString("joke").replaceAll("&quot;", "\""));
+                    String idString = value.getString("id");
+                    String jokeString = value.getString("joke").replaceAll("&quot;", "\"");
 
-                    Joke joke = new Joke(value.getString("id"), value.getString("joke"));
+                    Joke joke = new Joke(idString, jokeString);
                     jokes.setActiveJoke(joke);
+
+                    jokeText.setText(jokeString);
+                    saveButton.setEnabled(true);
                 } else {
                     jokeText.setText(randomJoke.getString("type"));
                 }

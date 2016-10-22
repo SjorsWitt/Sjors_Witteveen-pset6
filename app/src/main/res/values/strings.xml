@@ -10,4 +10,7 @@
     <string name="save_button_desc">Save button</string>
     <string name="saved_joke">Saved joke to your favorites list</string>
     <string name="copied_to_clipboard">Copied to clipboard.</string>
+    <string name="save">SAVE</string>
+    <string name="logged_in_as">You are logged in as:</string>
+    <string name="log_out">Log out</string>
 </resources>

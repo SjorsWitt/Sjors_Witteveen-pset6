@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean doubleBackToExitPressedOnce = false;
 
     private TextView jokeText;
-    private ImageButton saveButton;
+    private TextView loggedInAs;
+    private Button saveButton;
     private EditText firstName;
     private EditText lastName;
 
@@ -47,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         jokeText = (TextView) findViewById(R.id.joke_text);
-        saveButton = (ImageButton) findViewById(R.id.save_button);
+        loggedInAs = (TextView) findViewById(R.id.logged_in_as);
+        saveButton = (Button) findViewById(R.id.save_button);
         firstName = (EditText) findViewById(R.id.first_name);
         lastName = (EditText) findViewById(R.id.last_name);
 
@@ -59,24 +61,30 @@ public class MainActivity extends AppCompatActivity {
         jokes = Jokes.getInstance();
         user = mAuth.getCurrentUser();
 
+        if (jokes.getActiveJoke() != null) {
+            jokeText.setText(jokes.getActiveJoke().getJoke());
+        }
+        if (user != null) {
+            String loggedInAsString = getString(R.string.logged_in_as) + " " + user.getDisplayName();
+            loggedInAs.setText(loggedInAsString);
+
+            jokesReference = database.getReference("/users/" + user.getUid() + "/jokes/");
+        }
+
+
         // AuthStateListener
         // when user is logged out, finish MainActivity
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                } else {
+                if (user == null) {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                     MainActivity.this.finish();
                 }
             }
         };
-
-        jokesReference = database.getReference("/users/" + user.getUid() + "/jokes/");
     }
 
     @Override
@@ -112,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onRandomButtonClick(View view) {
-        saveButton.setEnabled(true);
+        saveButton.setEnabled(false);
         try {
             String urlString = "http://api.icndb.com/jokes/random/?";
             String firstNameString = firstName.getText().toString();
@@ -123,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
             if (!lastNameString.isEmpty()) {
                 urlString += "&lastName=" + URLEncoder.encode(lastNameString, "UTF-8");
             }
-            new ReadJokeFromJsonURL(jokeText, new URL(urlString)).execute();
+            new ReadJokeFromJsonURL(jokeText, saveButton, new URL(urlString)).execute();
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (UnsupportedEncodingException e) {
@@ -143,5 +151,9 @@ public class MainActivity extends AppCompatActivity {
     public void blabla(View view) {
         Intent intent = new Intent(this, FavoriteJokesActivity.class);
         startActivity(intent);
+    }
+
+    public void signOut(View view) {
+        mAuth.signOut();
     }
 }
