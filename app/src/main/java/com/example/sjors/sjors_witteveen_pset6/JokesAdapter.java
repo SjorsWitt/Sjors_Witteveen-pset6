@@ -10,6 +10,13 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+/*
+ * This class is a custom ArrayAdapter. It takes an ArrayList of Joke objects and sets it to the
+ * joke_list_item layout.
+ *
+ * By Sjors Witteveen
+ */
+
 public class JokesAdapter extends ArrayAdapter<Joke> {
 
     // constructor

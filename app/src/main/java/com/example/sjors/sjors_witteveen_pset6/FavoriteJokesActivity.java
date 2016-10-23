@@ -24,6 +24,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+/*
+ * This class displays the user's My Jokes in a ListView. The user can then copy these jokes to the
+ * clipboard or remove them by respectively clicking or long-clicking.
+ *
+ * By Sjors Witteveen
+ */
+
 public class FavoriteJokesActivity extends AppCompatActivity {
 
     private static final String TAG = "FavoriteJokesActivity";
@@ -40,6 +47,7 @@ public class FavoriteJokesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite_jokes);
 
+        // set up up navigation button
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -49,10 +57,12 @@ public class FavoriteJokesActivity extends AppCompatActivity {
         jokes = Jokes.getInstance();
         user = mAuth.getCurrentUser();
 
+        // get user directory reference
         if (user != null) {
             jokesReference = database.getReference("/users/" + user.getUid() + "/jokes/");
         }
 
+        // initialize ListView and JokesAdapter and set adapter to ListView
         final ListView jokeList = (ListView) findViewById(R.id.joke_list);
         final JokesAdapter adapter = new JokesAdapter(this, jokes.getJokes());
         jokeList.setAdapter(adapter);
@@ -77,6 +87,7 @@ public class FavoriteJokesActivity extends AppCompatActivity {
             }
         };
 
+        // copy joke to clipboard when it it clicked
         jokeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             // checks/unchecks ToDoItem that is clicked and notifies adapter
             @Override
@@ -89,6 +100,7 @@ public class FavoriteJokesActivity extends AppCompatActivity {
             }
         });
 
+        // remove joke from Firebase database when long-clicked
         jokeList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             // removes ToDoItem from ToDoItems ArrayList and notifies adapter
             @Override
@@ -100,6 +112,7 @@ public class FavoriteJokesActivity extends AppCompatActivity {
         });
     }
 
+    // add info button to actionbar menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // add favorites button to action bar
@@ -110,23 +123,29 @@ public class FavoriteJokesActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        // display info toast when info button is clicked
         if (item.getItemId() == R.id.button_info) {
             Toast toast = Toast.makeText(this, R.string.info_toast, Toast.LENGTH_LONG);
             TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
             if( v != null) v.setGravity(Gravity.CENTER);
             toast.show();
+
+        // finish activity when up navigation button is clicked
         } else {
             finish();
         }
         return super.onOptionsItemSelected(item);
     }
 
+    // add ValueEventListener jokesListener to jokesReference onStart
     @Override
     public void onStart() {
         super.onStart();
         jokesReference.addValueEventListener(jokesListener);
     }
 
+    // remove ValueEventListener jokesListener from jokesReference onStop
     @Override
     public void onStop() {
         super.onStop();

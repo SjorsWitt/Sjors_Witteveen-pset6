@@ -11,6 +11,14 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Scanner;
 
+/*
+ * This class takes a URL, TextView and SaveButton as parameter. The id and joke are read from the
+ * JSON retrieved from the URL. Once retrieved, these Strings are saved to Jokes singleton and
+ * displayed in the TextView. Finally, the Button is enabled once the joke is displayed.
+ *
+ * By Sjors Witteveen
+ */
+
 public class ReadJokeFromJsonURL extends AsyncTask<Void, Void, Void> {
 
     private Jokes jokes;
@@ -19,6 +27,7 @@ public class ReadJokeFromJsonURL extends AsyncTask<Void, Void, Void> {
     private TextView jokeText;
     private Button saveButton;
 
+    // constructor
     public ReadJokeFromJsonURL(TextView jokeText, Button saveButton, URL url) {
         this.url = url;
         this.jokeText = jokeText;
@@ -26,6 +35,7 @@ public class ReadJokeFromJsonURL extends AsyncTask<Void, Void, Void> {
         jokes = Jokes.getInstance();
     }
 
+    // show user the joke is being loaded by editing the TextView
     @Override
     protected void onPreExecute() {
         jokeText.setText(R.string.loading);
@@ -55,10 +65,10 @@ public class ReadJokeFromJsonURL extends AsyncTask<Void, Void, Void> {
         return null;
     }
 
+    // retrieve JSON item info and set TextView and Button
     @Override
     protected void onPostExecute(Void result) {
 
-        // retrieve JSON item info
         if (randomJoke != null) {
             try {
                 if (randomJoke.getString("type").equals("success")) {
@@ -66,12 +76,15 @@ public class ReadJokeFromJsonURL extends AsyncTask<Void, Void, Void> {
                     String idString = value.getString("id");
                     String jokeString = value.getString("joke").replaceAll("&quot;", "\"");
 
+                    // set retrieved Joke as active joke
                     Joke joke = new Joke(idString, jokeString);
                     jokes.setActiveJoke(joke);
 
+                    // display retrieved joke in TextView and enable saveButton
                     jokeText.setText(jokeString);
                     saveButton.setEnabled(true);
                 } else {
+                    // display error if something went wrong
                     jokeText.setText(randomJoke.getString("type"));
                 }
             } catch (JSONException e) {

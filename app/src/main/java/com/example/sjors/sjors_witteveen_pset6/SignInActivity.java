@@ -23,6 +23,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+/*
+ * This class lets the user sign in with a Google account. Once signed in, MainActivity will be
+ * started.
+ *
+ * By Sjors Witteveen
+ */
+
 public class SignInActivity extends AppCompatActivity implements View.OnClickListener,
         GoogleApiClient.OnConnectionFailedListener {
 
@@ -39,6 +46,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
+        // find SignInButton, add OnClickListener and customize it
         SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
         signInButton.setOnClickListener(this);
         signInButton.setSize(SignInButton.SIZE_WIDE);
@@ -67,6 +75,8 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+
+                    // start MainActivity when signed in
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
                 }
@@ -74,12 +84,14 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         };
     }
 
+    // add AuthStateListener to FirebaseAuth onStart
     @Override
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
     }
 
+    // remove AuthStateListener from FirebaseAuth onStop
     @Override
     public void onStop() {
         super.onStop();
@@ -88,6 +100,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    // start sign in intent
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -104,9 +117,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
-            } else {
-                // Google Sign In failed, update UI appropriately
-                // ...
             }
         }
     }
@@ -129,11 +139,11 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                             Toast.makeText(SignInActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
-                        // ...
                     }
                 });
     }
 
+    // sign in when SignInButton is clicked
     @Override
     public void onClick(View v) {
         int i = v.getId();

@@ -25,6 +25,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
+/*
+ * MainActivity allows the user to ask for a random Chuck Norris joke. This joke can be added to the
+ * My Jokes list. From the menu in the action bar, the user can open this list. By hitting the sign
+ * out button or double pressing the back button, the user can sign out.
+ *
+ * By Sjors Witteveen
+ */
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
@@ -56,16 +64,25 @@ public class MainActivity extends AppCompatActivity {
         lastName = (EditText) findViewById(R.id.last_name);
 
         // disable ability to save welcome message
-        saveButton.setEnabled(false);
+        if (savedInstanceState == null) {
+            saveButton.setEnabled(false);
+
+        // remember if button is enabled from savedInstanceState
+        } else {
+            saveButton.setEnabled(savedInstanceState.getBoolean("saveButton", false));
+        }
 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         jokes = Jokes.getInstance();
         user = mAuth.getCurrentUser();
 
+        // remembers active joke when onCreate is called (e.g. on layout switch)
         if (jokes.getActiveJoke() != null) {
             jokeText.setText(jokes.getActiveJoke().getJoke());
         }
+
+        // display user name and get reference to user direcctory
         if (user != null) {
             String loggedInAsString = getString(R.string.logged_in_as) + " " + user.getDisplayName();
             loggedInAs.setText(loggedInAsString);
@@ -88,6 +105,14 @@ public class MainActivity extends AppCompatActivity {
         };
     }
 
+    // remember whether saveButton is enabled or not
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean("saveButton", saveButton.isEnabled());
+        super.onSaveInstanceState(outState);
+    }
+
+    // add favorites button to actionbar menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // add favorites button to action bar
@@ -96,23 +121,23 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    // start FavoriteJokesActivity when menu item is selected
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent = new Intent(this, FavoriteJokesActivity.class);
         startActivity(intent);
 
-        Toast.makeText(getApplicationContext(), "Opened your favorite jokes list!",
-                Toast.LENGTH_SHORT).show();
-
         return super.onOptionsItemSelected(item);
     }
 
+    // add AuthStateListener to FirebaseAuth onStart
     @Override
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
     }
 
+    // remove AuthStateListener from FirebaseAuth onStop
     @Override
     public void onStop() {
         super.onStop();
@@ -121,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // sign out when back button is pressed twice within 2 seconds
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
@@ -139,8 +165,13 @@ public class MainActivity extends AppCompatActivity {
         }, 2000);
     }
 
+    // get a random joke when button is pressed
     public void onRandomButtonClick(View view) {
+
+        // disable saveButton
         saveButton.setEnabled(false);
+
+        // create URL (with/without first/last name) and read joke from JSON
         try {
             String urlString = "http://api.icndb.com/jokes/random/?";
             String firstNameString = firstName.getText().toString();
@@ -151,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
             if (!lastNameString.isEmpty()) {
                 urlString += "&lastName=" + URLEncoder.encode(lastNameString, "UTF-8");
             }
+            // ReadJokeFromJsonURL enables saveButton after joke is displayed in jokeText
             new ReadJokeFromJsonURL(jokeText, saveButton, new URL(urlString)).execute();
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -159,15 +191,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // add joke to My Jokes list on button click
     public void onSave(View view) {
+
+        // disable saveButton
         saveButton.setEnabled(false);
         Toast.makeText(this, R.string.saved_joke, Toast.LENGTH_SHORT).show();
 
+        // save active joke to Jokes singleton ArrayList and Firebase Database
         jokes.saveActiveJoke();
         jokesReference.child(jokes.getActiveJoke().getId())
                 .setValue(jokes.getActiveJoke().getJoke());
     }
 
+    // sign out from FirebaseAuth
     public void signOut(View view) {
         mAuth.signOut();
     }
