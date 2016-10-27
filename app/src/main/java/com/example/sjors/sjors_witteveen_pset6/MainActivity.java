@@ -43,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseAuth auth;
+    private FirebaseAuth.AuthStateListener authListener;
     private FirebaseDatabase database;
     private Jokes jokes;
     private FirebaseUser user;
@@ -78,10 +78,10 @@ public class MainActivity extends AppCompatActivity {
             saveButton.setEnabled(savedInstanceState.getBoolean("saveButton", false));
         }
 
-        mAuth = FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         jokes = Jokes.getInstance();
-        user = mAuth.getCurrentUser();
+        user = auth.getCurrentUser();
 
         // remembers active joke when onCreate is called (e.g. on layout switch)
         if (jokes.getActiveJoke() != null) {
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
         // AuthStateListener
         // finish MainActivity when user is logged out
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
+        authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -140,15 +140,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
+        auth.addAuthStateListener(authListener);
     }
 
     // remove AuthStateListener from FirebaseAuth onStop
     @Override
     public void onStop() {
         super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
+        if (authListener != null) {
+            auth.removeAuthStateListener(authListener);
         }
     }
 
@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
-            mAuth.signOut();
+            auth.signOut();
         }
 
         this.doubleBackToExitPressedOnce = true;
@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
 
     // sign out from FirebaseAuth
     public void signOut(View view) {
-        mAuth.signOut();
+        auth.signOut();
     }
 
     public class ReadJokeFromJsonURL extends AsyncTask<Void, Void, Void> {

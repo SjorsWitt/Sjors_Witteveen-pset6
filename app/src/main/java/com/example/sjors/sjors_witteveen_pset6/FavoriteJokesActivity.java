@@ -35,7 +35,7 @@ public class FavoriteJokesActivity extends AppCompatActivity {
 
     private static final String TAG = "FavoriteJokesActivity";
 
-    private FirebaseAuth mAuth;
+    private FirebaseAuth auth;
     private FirebaseDatabase database;
     private Jokes jokes;
     private FirebaseUser user;
@@ -52,10 +52,10 @@ public class FavoriteJokesActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        mAuth = FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         jokes = Jokes.getInstance();
-        user = mAuth.getCurrentUser();
+        user = auth.getCurrentUser();
 
         // get user directory reference
         if (user != null) {
