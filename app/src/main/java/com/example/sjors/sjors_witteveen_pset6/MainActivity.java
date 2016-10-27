@@ -74,9 +74,7 @@ public class MainActivity extends AppCompatActivity {
         activeJoke = ActiveJoke.getInstance();
         user = auth.getCurrentUser();
 
-        if (savedInstanceState == null) {
-            database.setPersistenceEnabled(true);
-        } else {
+        if (savedInstanceState != null) {
             saveButton.setEnabled(savedInstanceState.getBoolean("saveButton", false));
         }
 

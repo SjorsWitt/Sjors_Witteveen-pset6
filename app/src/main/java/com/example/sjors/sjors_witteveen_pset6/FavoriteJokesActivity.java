@@ -81,8 +81,8 @@ public class FavoriteJokesActivity extends AppCompatActivity {
                 for (DataSnapshot child : children) {
                     Joke joke = new Joke(child.getKey(), (String) child.getValue());
                     jokes.add(joke);
-                    sortJokesAlphabetically();
                 }
+                sortJokesAlphabetically();
                 adapter.notifyDataSetChanged();
             }
 
