@@ -3,8 +3,8 @@ package com.example.sjors.sjors_witteveen_pset6;
 import java.util.ArrayList;
 
 /*
- * This class is a singleton object consisting of an ArrayList of all saved Joke objects and a Joke
- * that is currently displayed in the MainActivity.
+ * This class is a singleton object consisting of the active joke that is currently displayed in the
+ * MainActivity
  *
  * By Sjors Witteveen
  */

@@ -25,6 +25,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /*
  * This class displays the user's saved jokes in a ListView. The user can then copy these jokes to
@@ -70,7 +72,7 @@ public class FavoriteJokesActivity extends AppCompatActivity {
         jokeList.setAdapter(adapter);
 
         // ValueEventListener
-        // if data has changed, refresh jokes singleton and notify adapter
+        // if data has changed, refresh Joke ArrayList and notify adapter
         jokesListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -79,6 +81,7 @@ public class FavoriteJokesActivity extends AppCompatActivity {
                 for (DataSnapshot child : children) {
                     Joke joke = new Joke(child.getKey(), (String) child.getValue());
                     jokes.add(joke);
+                    sortJokesAlphabetically();
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -147,6 +150,15 @@ public class FavoriteJokesActivity extends AppCompatActivity {
         if (jokesListener != null) {
             jokesReference.removeEventListener(jokesListener);
         }
+    }
+
+    private void sortJokesAlphabetically() {
+        Collections.sort(jokes, new Comparator<Joke>() {
+            @Override
+            public int compare(Joke o1, Joke o2) {
+                return o1.getJoke().compareTo(o2.getJoke());
+            }
+        });
     }
 
     private void copyJokeToClipboard(Joke joke) {

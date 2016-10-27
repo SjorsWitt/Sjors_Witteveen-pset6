@@ -207,7 +207,6 @@ public class MainActivity extends AppCompatActivity {
         auth.signOut();
     }
 
-
     public class ReadJokeFromJsonURL extends AsyncTask<Void, Void, Void> {
 
         private URL url;
