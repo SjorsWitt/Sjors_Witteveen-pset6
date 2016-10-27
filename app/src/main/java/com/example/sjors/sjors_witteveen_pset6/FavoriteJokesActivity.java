@@ -24,9 +24,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 /*
- * This class displays the user's My Jokes in a ListView. The user can then copy these jokes to the
- * clipboard or remove them by respectively clicking or long-clicking.
+ * This class displays the user's saved jokes in a ListView. The user can then copy these jokes to
+ * the clipboard or remove them by respectively clicking or long-clicking.
  *
  * By Sjors Witteveen
  */
@@ -37,10 +39,11 @@ public class FavoriteJokesActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
     private FirebaseDatabase database;
-    private Jokes jokes;
     private FirebaseUser user;
     private DatabaseReference jokesReference;
     private ValueEventListener jokesListener;
+
+    ArrayList<Joke> jokes = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,7 +57,6 @@ public class FavoriteJokesActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-        jokes = Jokes.getInstance();
         user = auth.getCurrentUser();
 
         // get user directory reference
@@ -64,7 +66,7 @@ public class FavoriteJokesActivity extends AppCompatActivity {
 
         // initialize ListView and JokesAdapter and set adapter to ListView
         final ListView jokeList = (ListView) findViewById(R.id.joke_list);
-        final JokesAdapter adapter = new JokesAdapter(this, jokes.getJokes());
+        final JokesAdapter adapter = new JokesAdapter(this, jokes);
         jokeList.setAdapter(adapter);
 
         // ValueEventListener
@@ -76,7 +78,7 @@ public class FavoriteJokesActivity extends AppCompatActivity {
                 Iterable<DataSnapshot> children = dataSnapshot.getChildren();
                 for (DataSnapshot child : children) {
                     Joke joke = new Joke(child.getKey(), (String) child.getValue());
-                    jokes.saveJoke(joke);
+                    jokes.add(joke);
                 }
                 adapter.notifyDataSetChanged();
             }

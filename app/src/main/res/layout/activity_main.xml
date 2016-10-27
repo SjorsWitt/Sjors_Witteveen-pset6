@@ -72,6 +72,7 @@
                 android:drawableStart="@drawable/ic_save_joke"
                 android:drawablePadding="5dp"
                 android:onClick="onSave"
+                android:enabled="false"
                 android:text="@string/save"
                 android:contentDescription="@string/save_button_desc"
                 style="?android:attr/buttonBarButtonStyle"/>

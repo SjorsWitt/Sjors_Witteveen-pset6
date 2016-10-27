@@ -32,9 +32,9 @@ import java.net.URLEncoder;
 import java.util.Scanner;
 
 /*
- * MainActivity allows the user to ask for a random Chuck Norris joke. This joke can be added to the
- * My Jokes list. From the menu in the action bar, the user can open this list. By hitting the sign
- * out button or double pressing the back button, the user can sign out.
+ * MainActivity allows the user to ask for a random Chuck Norris joke. This Joke can be saved to the
+ * Firebase Database. From the menu in the action bar, the user can view saved jokes in a list. By
+ * hitting the sign out button or double pressing the back button, the user can sign out.
  *
  * By Sjors Witteveen
  */
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseDatabase database;
-    private Jokes jokes;
+    private ActiveJoke activeJoke;
     private FirebaseUser user;
     private DatabaseReference jokesReference;
 
@@ -69,23 +69,20 @@ public class MainActivity extends AppCompatActivity {
         firstName = (EditText) findViewById(R.id.first_name);
         lastName = (EditText) findViewById(R.id.last_name);
 
-        // disable ability to save welcome message
-        if (savedInstanceState == null) {
-            saveButton.setEnabled(false);
+        auth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        activeJoke = ActiveJoke.getInstance();
+        user = auth.getCurrentUser();
 
-        // remember if button is enabled from savedInstanceState
+        if (savedInstanceState == null) {
+            database.setPersistenceEnabled(true);
         } else {
             saveButton.setEnabled(savedInstanceState.getBoolean("saveButton", false));
         }
 
-        auth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance();
-        jokes = Jokes.getInstance();
-        user = auth.getCurrentUser();
-
         // remembers active joke when onCreate is called (e.g. on layout switch)
-        if (jokes.getActiveJoke() != null) {
-            jokeText.setText(jokes.getActiveJoke().getJoke());
+        if (activeJoke.getActiveJoke() != null) {
+            jokeText.setText(activeJoke.getActiveJoke().getJoke());
         }
 
         // display user name and get reference to user directory
@@ -195,16 +192,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // add joke to My Jokes list on button click
+    // add joke to Firebase Database on button click
     public void onSave(View view) {
 
         saveButton.setEnabled(false);
         Toast.makeText(this, R.string.saved_joke, Toast.LENGTH_SHORT).show();
 
-        // save active joke to Jokes singleton ArrayList and Firebase Database
-        jokes.saveActiveJoke();
-        jokesReference.child(jokes.getActiveJoke().getId())
-                .setValue(jokes.getActiveJoke().getJoke());
+        // save active joke Firebase Database
+        jokesReference.child(activeJoke.getActiveJoke().getId())
+                .setValue(activeJoke.getActiveJoke().getJoke());
     }
 
     public void signOut(View view) {
@@ -265,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
 
                         // set retrieved Joke as active joke
                         Joke joke = new Joke(idString, jokeString);
-                        jokes.setActiveJoke(joke);
+                        activeJoke.setActiveJoke(joke);
 
                         // display retrieved joke in TextView and enable saveButton
                         jokeText.setText(jokeString);
