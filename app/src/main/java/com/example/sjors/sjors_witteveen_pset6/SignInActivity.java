@@ -64,10 +64,8 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        // initialize FirebaseAutch
         auth = FirebaseAuth.getInstance();
 
-        // initialize AuthStateListener
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -100,7 +98,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    // start sign in intent
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -143,7 +140,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 });
     }
 
-    // sign in when SignInButton is clicked
     @Override
     public void onClick(View v) {
         int i = v.getId();

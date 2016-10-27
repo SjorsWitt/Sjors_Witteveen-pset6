@@ -87,22 +87,16 @@ public class FavoriteJokesActivity extends AppCompatActivity {
             }
         };
 
-        // copy joke to clipboard when it it clicked
         jokeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            // checks/unchecks ToDoItem that is clicked and notifies adapter
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Joke joke = (Joke) jokeList.getItemAtPosition(position);
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText(joke.getId(), joke.getJoke());
-                clipboard.setPrimaryClip(clip);
-                Toast.makeText(getApplicationContext(), R.string.copied_to_clipboard, Toast.LENGTH_SHORT).show();
+                copyJokeToClipboard(joke);
             }
         });
 
         // remove joke from Firebase database when long-clicked
         jokeList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            // removes ToDoItem from ToDoItems ArrayList and notifies adapter
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Joke joke = (Joke) jokeList.getItemAtPosition(position);
@@ -112,7 +106,6 @@ public class FavoriteJokesActivity extends AppCompatActivity {
         });
     }
 
-    // add info button to actionbar menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // add favorites button to action bar
@@ -152,5 +145,12 @@ public class FavoriteJokesActivity extends AppCompatActivity {
         if (jokesListener != null) {
             jokesReference.removeEventListener(jokesListener);
         }
+    }
+
+    private void copyJokeToClipboard(Joke joke) {
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText(joke.getId(), joke.getJoke());
+        clipboard.setPrimaryClip(clip);
+        Toast.makeText(getApplicationContext(), R.string.copied_to_clipboard, Toast.LENGTH_SHORT).show();
     }
 }

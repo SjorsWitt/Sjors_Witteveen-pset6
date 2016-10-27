@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
             jokeText.setText(jokes.getActiveJoke().getJoke());
         }
 
-        // display user name and get reference to user direcctory
+        // display user name and get reference to user directory
         if (user != null) {
             String loggedInAsString = getString(R.string.logged_in_as) + " " + user.getDisplayName();
             loggedInAs.setText(loggedInAsString);
@@ -118,10 +118,8 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
-    // add favorites button to actionbar menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // add favorites button to action bar
         getMenuInflater().inflate(R.menu.button_favorites, menu);
 
         return true;
@@ -174,7 +172,6 @@ public class MainActivity extends AppCompatActivity {
     // get a random joke when button is pressed
     public void onRandomButtonClick(View view) {
 
-        // disable saveButton
         saveButton.setEnabled(false);
 
         // create URL (with/without first/last name) and read joke from JSON
@@ -201,7 +198,6 @@ public class MainActivity extends AppCompatActivity {
     // add joke to My Jokes list on button click
     public void onSave(View view) {
 
-        // disable saveButton
         saveButton.setEnabled(false);
         Toast.makeText(this, R.string.saved_joke, Toast.LENGTH_SHORT).show();
 
@@ -211,10 +207,10 @@ public class MainActivity extends AppCompatActivity {
                 .setValue(jokes.getActiveJoke().getJoke());
     }
 
-    // sign out from FirebaseAuth
     public void signOut(View view) {
         auth.signOut();
     }
+
 
     public class ReadJokeFromJsonURL extends AsyncTask<Void, Void, Void> {
 
