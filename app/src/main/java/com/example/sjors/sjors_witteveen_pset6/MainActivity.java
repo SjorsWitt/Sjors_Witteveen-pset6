@@ -192,9 +192,9 @@ public class MainActivity extends AppCompatActivity {
             new ReadJokeFromJsonURL(new URL(urlString)).execute();
 
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            Log.e(TAG, "MalformedURLException");
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            Log.e(TAG, "UnsupportedEncodingException");
         }
     }
 
@@ -244,14 +244,14 @@ public class MainActivity extends AppCompatActivity {
                     str += scan.nextLine();
                 scan.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.e(TAG, "IOException");
             }
 
             // build a JSON object
             try {
                 randomJoke = new JSONObject(str);
             } catch (JSONException e) {
-                e.printStackTrace();
+                Log.e(TAG, "JSONException");
             }
             return null;
         }
@@ -279,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
                         jokeText.setText(randomJoke.getString("type"));
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.e(TAG, "JSONException");
                 }
             }
             super.onPostExecute(result);
